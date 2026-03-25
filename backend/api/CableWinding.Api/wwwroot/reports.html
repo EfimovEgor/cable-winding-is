@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отчёты — ИС намотки кабеля</title>
+    <link rel="stylesheet" href="/theme.css">
+    <style>
+        body { padding: 24px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding: 16px; background: #fff; border-radius: 8px; border: 1px solid #e5e5e5; }
+        .card { background: #fff; border-radius: 8px; padding: 24px; border: 1px solid #e5e5e5; max-width: 600px; }
+        h1 { font-size: 22px; color: #374151; }
+        .badge { font-size: 11px; padding: 4px 10px; border-radius: 4px; background: #ffedd5; color: #ea580c; margin-bottom: 16px; }
+        .placeholder { color: #6b7280; padding: 40px 0; text-align: center; }
+    </style>
+</head>
+<body>
+    <script src="/auth.js"></script>
+    <script src="/common.js"></script>
+    <div class="page-header">
+        <div><span id="userInfo"></span></div>
+        <nav id="nav"></nav>
+    </div>
+    <script>if (!initPage('reports')) document.body.innerHTML = '';</script>
+
+    <div class="card">
+        <span class="badge">Оператор АСУТП</span>
+        <h1>Формирование отчетности</h1>
+        <p style="color:#6b7280">Выбор периода (смена/сутки/партия), статистика, графики</p>
+        <div class="placeholder">
+            <p>В разработке (M5)</p>
+            <p>Здесь будут: выбор периода, формирование отчёта, просмотр результата</p>
+        </div>
+    </div>
+</body>
+</html>

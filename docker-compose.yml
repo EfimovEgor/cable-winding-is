@@ -1,0 +1,50 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: cablewinding
+      POSTGRES_PASSWORD: cablewinding
+      POSTGRES_DB: cablewinding
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cablewinding"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/api/CableWinding.Api/Dockerfile
+    ports:
+      - "5203:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  trace-connector:
+    build:
+      context: .
+      dockerfile: backend/trace-connector/CableWinding.TraceConnector/Dockerfile
+    environment:
+      Api__BaseUrl: http://api:8080
+    depends_on:
+      - api
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    depends_on:
+      - api
+
+volumes:
+  pgdata: {}

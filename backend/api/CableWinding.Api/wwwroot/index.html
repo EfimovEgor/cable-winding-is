@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мониторинг — ИС намотки кабеля</title>
+    <link rel="stylesheet" href="/theme.css">
+    <style>
+        .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px; max-width: 1600px; margin: 0 auto; }
+        @media (max-width: 1100px) { .layout { grid-template-columns: 1fr; } }
+        .header { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; padding: 16px; background: #fff; border-radius: 8px; border: 1px solid #e5e5e5; }
+        .header h1 { font-size: 18px; font-weight: 600; color: #374151; }
+        .header-meta { font-size: 13px; color: #6b7280; }
+        .integration { font-size: 12px; color: #9ca3af; padding: 4px 0; }
+        .params-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        @media (max-width: 900px) { .params-grid { grid-template-columns: repeat(2, 1fr); } }
+        .param-card { background: #fafafa; border: 1px solid #e5e5e5; border-radius: 6px; padding: 16px; text-align: center; }
+        .param-card .label { font-size: 11px; color: #6b7280; text-transform: uppercase; margin-bottom: 4px; }
+        .param-card .value { font-size: 26px; font-weight: 700; color: #ea580c; }
+        .param-card .unit { font-size: 12px; color: #9ca3af; margin-left: 4px; }
+        .param-card.warn .value { color: #ca8a04; }
+        .param-card.err .value { color: #dc2626; }
+        .param-card.na .value { font-size: 18px; color: #9ca3af; }
+        .chart-wrap { height: 180px; position: relative; background: #fafafa; border-radius: 6px; }
+        .no-data { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #9ca3af; font-size: 13px; text-align: center; padding: 24px; }
+        .events { max-height: 200px; overflow-y: auto; font-size: 13px; }
+        .event { padding: 8px 0; border-bottom: 1px solid #e5e5e5; display: flex; gap: 8px; align-items: center; }
+        .event .ts { color: #9ca3af; flex-shrink: 0; }
+        .event .msg { color: #374151; }
+        .event.info .dot { width: 6px; height: 6px; border-radius: 50%; background: #ea580c; }
+        .status-bar { display: flex; align-items: center; gap: 16px; padding: 12px 16px; background: #fafafa; font-size: 13px; border-top: 1px solid #e5e5e5; }
+        .status-item { display: flex; align-items: center; gap: 6px; color: #6b7280; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; }
+        .status-dot.online { background: #16a34a; }
+        .status-dot.offline { background: #9ca3af; }
+    </style>
+</head>
+<body>
+    <script src="/auth.js"></script>
+    <script src="/common.js"></script>
+    <div class="header">
+        <div>
+            <h1>Мониторинг процесса намотки кабеля</h1>
+            <div class="header-meta" id="lastUpdate">Подключение к источнику данных…</div>
+            <div class="integration">Источник: TraceConnector (симулятор) → TRACE MODE 7 OPC UA</div>
+        </div>
+        <div>
+            <div class="user-info" id="userInfo"></div>
+            <nav id="nav"></nav>
+        </div>
+    </div>
+    <script>if (!initPage('monitor')) document.body.innerHTML = '';</script>
+
+    <div class="layout">
+        <div class="panel" style="grid-column: 1 / -1;">
+            <div class="panel-title">Текущие параметры намотки</div>
+            <div class="panel-body">
+                <div class="params-grid">
+                    <div class="param-card" id="cardSpeed">
+                        <div class="label">Скорость</div>
+                        <div class="value"><span id="valSpeed">—</span><span class="unit">м/мин</span></div>
+                    </div>
+                    <div class="param-card" id="cardTension">
+                        <div class="label">Натяжение</div>
+                        <div class="value"><span id="valTension">—</span><span class="unit">Н</span></div>
+                    </div>
+                    <div class="param-card" id="cardStep">
+                        <div class="label">Шаг укладки</div>
+                        <div class="value"><span id="valStep">—</span><span class="unit">мм</span></div>
+                    </div>
+                    <div class="param-card">
+                        <div class="label">Время датчика</div>
+                        <div class="value" style="font-size:14px"><span id="valTs">—</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">Скорость — тренд</div>
+            <div class="panel-body">
+                <div class="chart-wrap" id="wrapSpeed"><div class="no-data">Данные с TRACE MODE 7 пока не поступают</div></div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-title">Натяжение — тренд</div>
+            <div class="panel-body">
+                <div class="chart-wrap" id="wrapTension"><div class="no-data">Данные с TRACE MODE 7 пока не поступают</div></div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-title">Шаг укладки — тренд</div>
+            <div class="panel-body">
+                <div class="chart-wrap" id="wrapStep"><div class="no-data">Данные с TRACE MODE 7 пока не поступают</div></div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-title">События / предупреждения</div>
+            <div class="panel-body">
+                <div class="events" id="events">
+                    <div class="event info"><span class="dot"></span><span class="ts">—</span><span class="msg">Ожидание данных с TRACE MODE 7. События появятся при отклонениях.</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" style="grid-column: 1 / -1;">
+            <div class="status-bar">
+                <div class="status-item">
+                    <span class="status-dot offline" id="dotSource"></span>
+                    <span>Источник данных</span>
+                </div>
+                <div class="status-item">
+                    <span>API</span>
+                    <span id="apiStatus">—</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const base = window.location.origin;
+        async function load() {
+            try {
+                const r = await Auth.fetch(base + '/api/telemetry/latest');
+                if (r.status === 401) { Auth.logout(); return; }
+                const data = await r.json();
+                const p = data.params_;
+                document.getElementById('lastUpdate').textContent = p ? ('Обновлено: ' + new Date(data.receivedAt).toLocaleString('ru')) : 'Данные с TRACE MODE 7 пока не поступают';
+                document.getElementById('dotSource').className = 'status-dot ' + (p ? 'online' : 'offline');
+                document.getElementById('apiStatus').textContent = 'OK';
+                document.getElementById('valTs').textContent = p ? new Date(p.Ts).toLocaleTimeString('ru') : '—';
+                const cards = ['Speed','Tension','Step'];
+                const vals = [p?.Speed, p?.Tension, p?.Step];
+                const ranges = { Speed: [40,80], Tension: [2,5], Step: [0.7,1.3] };
+                vals.forEach((v, i) => {
+                    const id = cards[i];
+                    const card = document.getElementById('card' + id);
+                    const valEl = document.getElementById('val' + id);
+                    if (!p) { valEl.textContent = '—'; card.className = 'param-card na'; return; }
+                    valEl.textContent = v != null ? v.toFixed(2) : '—';
+                    card.className = 'param-card';
+                    if (v != null) {
+                        const [min, max] = ranges[id];
+                        if (v < min || v > max) card.classList.add('warn');
+                        if (v < min * 0.7 || v > max * 1.3) card.classList.add('err');
+                    }
+                });
+            } catch (e) {
+                document.getElementById('apiStatus').textContent = 'Ошибка';
+                document.getElementById('dotSource').className = 'status-dot offline';
+                document.getElementById('lastUpdate').textContent = 'Ошибка: ' + e.message;
+            }
+        }
+        load();
+        setInterval(load, 2000);
+    </script>
+</body>
+</html>

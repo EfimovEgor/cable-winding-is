@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "backend", "backend", "{811D961D-2556-45D2-8104-9A41BCBD08DA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{67D31009-2B4F-49F1-A200-EC2FE8E4AADD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CableWinding.Api", "backend\api\CableWinding.Api\CableWinding.Api.csproj", "{05765C5E-6222-43DC-80FC-99BB0CA150B3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "trace-connector", "trace-connector", "{6F5CEA9F-549D-469F-8A37-3A12AB8770F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CableWinding.TraceConnector", "backend\trace-connector\CableWinding.TraceConnector\CableWinding.TraceConnector.csproj", "{094C147F-94F1-4F53-8615-43B1A90A44DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{05765C5E-6222-43DC-80FC-99BB0CA150B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05765C5E-6222-43DC-80FC-99BB0CA150B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05765C5E-6222-43DC-80FC-99BB0CA150B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05765C5E-6222-43DC-80FC-99BB0CA150B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{094C147F-94F1-4F53-8615-43B1A90A44DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{094C147F-94F1-4F53-8615-43B1A90A44DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{094C147F-94F1-4F53-8615-43B1A90A44DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{094C147F-94F1-4F53-8615-43B1A90A44DC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{67D31009-2B4F-49F1-A200-EC2FE8E4AADD} = {811D961D-2556-45D2-8104-9A41BCBD08DA}
+		{05765C5E-6222-43DC-80FC-99BB0CA150B3} = {67D31009-2B4F-49F1-A200-EC2FE8E4AADD}
+		{6F5CEA9F-549D-469F-8A37-3A12AB8770F3} = {811D961D-2556-45D2-8104-9A41BCBD08DA}
+		{094C147F-94F1-4F53-8615-43B1A90A44DC} = {6F5CEA9F-549D-469F-8A37-3A12AB8770F3}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Возможности по ролям — ИС намотки кабеля</title>
+    <link rel="stylesheet" href="/theme.css">
+    <style>
+        body { padding: 24px; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding: 16px; background: #fff; border-radius: 8px; border: 1px solid #e5e5e5; }
+        .card { background: #fff; border-radius: 8px; padding: 24px; border: 1px solid #e5e5e5; margin-bottom: 24px; max-width: 900px; }
+        h1 { margin: 0 0 24px; font-size: 22px; color: #374151; }
+        .role { border-left: 4px solid #ea580c; padding-left: 16px; margin-bottom: 24px; }
+        .role:last-child { margin-bottom: 0; }
+        .role h2 { margin: 0 0 8px; font-size: 18px; color: #374151; }
+        .role .desc { color: #6b7280; font-size: 14px; margin-bottom: 12px; }
+        .caps { list-style: none; padding: 0; margin: 0; }
+        .caps li { padding: 8px 0; border-bottom: 1px solid #e5e5e5; color: #374151; }
+        .caps li:last-child { border-bottom: none; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th, td { text-align: left; padding: 10px 12px; border: 1px solid #e5e5e5; }
+        th { background: #fafafa; font-weight: 600; color: #374151; }
+        td { color: #374151; }
+    </style>
+</head>
+<body>
+    <script src="/auth.js"></script>
+    <script src="/common.js"></script>
+    <div class="page-header">
+        <div><span id="userInfo"></span></div>
+        <nav id="nav"></nav>
+    </div>
+    <script>if (!initPage('roles')) document.body.innerHTML = '';</script>
+
+    <div class="card">
+        <h1>Возможности для всех ролей</h1>
+        <p style="color:#6b7280; margin-bottom:24px">По use-case диаграмме. ✓ — реализовано в MVP, ✗ — в разработке</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Раздел / Use Case</th>
+                    <th>Оператор АСУТП</th>
+                    <th>Технолог</th>
+                    <th>Сервисный инженер</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="/">Мониторинг параметров намотки</a></td>
+                    <td>✓</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td><a href="/">Получение предупреждений</a></td>
+                    <td>✓</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td><a href="/process.html">Запуск процесса намотки</a></td>
+                    <td>✗</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td><a href="/process.html">Ввод технологических параметров</a></td>
+                    <td>✗</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td><a href="/process.html">Аварийная остановка</a></td>
+                    <td>✗</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td><a href="/process.html">Корректировка режима намотки</a></td>
+                    <td>✗</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td><a href="/reports.html">Формирование отчетности</a></td>
+                    <td>✗</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td><a href="/archive.html">Просмотр архивных данных</a></td>
+                    <td>✗</td>
+                    <td>✗</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td><a href="/norms.html">Настройка нормативов и допусков</a></td>
+                    <td>—</td>
+                    <td>✗</td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td><a href="/diagnostics.html">Диагностика системы</a></td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>✗</td>
+                </tr>
+                <tr>
+                    <td><a href="/incidents.html">Журнал инцидентов</a></td>
+                    <td>✗</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card">
+        <h2 style="margin-top:0">Описание ролей</h2>
+
+        <div class="role">
+            <h2>Оператор АСУТП</h2>
+            <div class="desc">Основной пользователь на производстве</div>
+            <ul class="caps">
+                <li>Мониторинг параметров намотки (скорость, натяжение, шаг)</li>
+                <li>Получение предупреждений при отклонениях</li>
+                <li>Запуск процесса намотки</li>
+                <li>Ввод технологических параметров</li>
+                <li>Аварийная остановка процесса</li>
+                <li>Корректировка режима (по рекомендациям)</li>
+                <li>Формирование отчетности по смене/суткам/партии</li>
+                <li>Просмотр архивных данных</li>
+                <li>Журнал инцидентов</li>
+            </ul>
+        </div>
+
+        <div class="role">
+            <h2>Технолог</h2>
+            <div class="desc">Настройка нормативов и допусков</div>
+            <ul class="caps">
+                <li>Настройка нормативов и допусков (загрузка документов, версии, утверждение)</li>
+                <li>Просмотр архивных данных</li>
+                <li>Импорт нормативов из CSV/XLSX/PDF</li>
+            </ul>
+        </div>
+
+        <div class="role">
+            <h2>Сервисный инженер</h2>
+            <div class="desc">Диагностика и обслуживание системы</div>
+            <ul class="caps">
+                <li>Диагностика системы</li>
+                <li>Просмотр логов и состояния интеграций (API, DB, TraceConnector)</li>
+                <li>Мониторинг последних ошибок</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
